@@ -224,7 +224,7 @@ let parse_duration l =
 let parse_time_point l =
   let open Daypack_lib in
   let s = String.concat " " l in
-  match Time_expr.of_string s with
+  match Time_expr.of_string ~enabled_fragments:[`Time_point_expr] s with
   | Ok x ->
     begin match
         Time_expr.next_match_time_slot search_param x

@@ -206,15 +206,12 @@ let duration_of_daypack_duration (x : Daypack_lib.Duration.t) : duration =
   C.Period.lmake ~day:x.days ~hour:x.hours ~minute:x.minutes ~second:x.seconds ()
 
 let get_current_tz_offset_s () =
-  Ptime_clock.current_tz_offset_s () |> Option.get |> Option.some
+  Ptime_clock.current_tz_offset_s () |> Option.get
 
 let search_param =
-  let open Daypack_lib in
-  Search_param.Years_ahead_start_unix_second {
-    search_using_tz_offset_s = get_current_tz_offset_s ();
-    start = Time.Current.cur_unix_second ();
-    search_years_ahead = 5;
-  }
+  Daypack_lib.Search_param.make_using_years_ahead
+    ~search_using_tz_offset_s:(get_current_tz_offset_s ()) 5
+  |> Result.get_ok
 
 let parse_duration l =
   let s = String.concat " " l in
